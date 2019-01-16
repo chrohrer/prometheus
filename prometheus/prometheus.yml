@@ -7,7 +7,7 @@ global:
   # Attach these labels to any time series or alerts when communicating with
   # external systems (federation, remote storage, Alertmanager).
   external_labels:
-      monitor: 'my-project'
+      monitor: 'UA Server'
 
 # Load and evaluate rules in this file every 'evaluation_interval' seconds.
 rule_files:
@@ -19,14 +19,30 @@ rule_files:
 # Here it's Prometheus itself.
 scrape_configs:
   # The job name is added as a label `job=<job_name>` to any timeseries scraped from this config.
-  - job_name: 'prometheus'
-  - job_name: 'node'
+  #- job_name: 'prometheus'
+  - job_name: 'ua-servers'
 
     # Override the global default and scrape targets from this job every 5 seconds.
-    scrape_interval: 5s
+    #scrape_interval: 5s
 
     # metrics_path defaults to '/metrics'
     # scheme defaults to 'http'.
 
     static_configs:
-         - targets: ['localhost:9090','cadvisor:8080','node-exporter:9100']
+      - targets: ['localhost:9090','cadvisor:8080','node-exporter:9100','rps.ubuntunet.net:9100']
+
+  - job_name: "ua-rps"
+    scrape_interval: "60s"
+    static_configs:
+      - targets: ['rps.ubuntunet.net:9100']
+
+  - job_name: "ua-website"
+    scrape_interval: "60s"
+    scheme: https
+    static_configs:
+      - targets: ['ubuntunet.net:9100']
+
+  - job_name: "ternet-idp"
+    scrape_interval: "60s"
+    static_configs:
+      - targets: ['w2.ternet.or.tz:9100']
