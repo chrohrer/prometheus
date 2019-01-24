@@ -11,7 +11,8 @@ networks:
 services:
 
   prometheus:
-    image: prom/prometheus:v2.1.0
+    #image: prom/prometheus:v2.1.0
+    image: prom/prometheus:v2.6.1
     volumes:
       - ./prometheus/:/etc/prometheus/
       - prometheus_data:/prometheus
@@ -46,8 +47,8 @@ services:
       - '--path.sysfs=/host/sys'
       - --collector.filesystem.ignored-mount-points
       - "^/(sys|proc|dev|host|etc|rootfs/var/lib/docker/containers|rootfs/var/lib/docker/overlay2|rootfs/run/docker/netns|rootfs/var/lib/docker/aufs)($$|/)"
-    ports:
-      - 9100:9100
+    #ports:
+    #  - 9100:9100
     networks:
       - back-tier
     restart: always
